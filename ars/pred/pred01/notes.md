@@ -189,9 +189,102 @@
 
 ### Razvoj programiranja
 
-1. Nekdanjih orodij ni bilo (pisali 0 in 1)
-2. Nalagali program iz zunanjega v glavni pomnilnik (v 50. letih)
+- Nekdanjih orodij ni bilo (pisali 0 in 1)
+- Nalagali program iz zunanjega v glavni pomnilnik (v 50. letih)
   - bootstrap-anje ali bootloader omogoca zagon dejanskega OS
-3. Simbolicni zapis
+
+- Simbolicni zapis
   - Zbirni jezik (Assembly language)
   - Zbirnik (Assembler) -> pretvarja zbirnik jezik v strojni (0 in 1)
+
+- V 60ih se pojavijo visji programski jeziki:
+  - prvi: FORTRAN, ALGOL, COBOL, Lisp, ...
+  - kasneje: C, Pascal, C++, Java, Python, ...
+  - Primerjava:
+    - zbirni jezik -> hitreje izvaja, vender pocasneje pise
+
+- IBM -> IBM 360 ISA == prvi prenosljiv ukazni nabor
+
+
+## Racunalniska zgradba
+
+### Von Neumannov racunalniski model
+
+- Sestavljen iz:
+  - centralna procesna enota (CPE)
+  - glavni pomnilnik (GP)
+  - vhodno/izhodni sistem
+- Program ima shranjen v GP
+- CPE jemlje ukaze iz GP in jih izvrsuje zaporedoma
+- (Slika od prej)
+
+![Von Neumannova arhitektura](./imgs/von_neumann.png)
+
+- Povezava med deli se imenuje most, bridge ali chipset
+
+### Glavni deli modela
+
+1. CPE oz. procesor
+  - mikroprocesor
+  - vodi dogajanje v rac.
+  - jemlje ukaze iz GP in jih izvrsuje
+  - tri sestavni deli
+  - **kontrolna enota**:
+    - prevzema ukaze in operacije
+    - aktivira operacije
+  - **aritmeticno-logicna enota** (ALE) -> izvrsuje ukaze
+  - **registri** zacasno shranjujejo podatke
+
+2. **Glavni pomnilnik**
+  - v njem shranjeni ukazi in operandi
+  - sestavljajo ga pomnilniske besede (vsaka s svojim naslovom)
+  - tehnologija DRAM
+
+3. **Vhodno/izhodno sistem** (angl. I/O)
+  - prenos informacij iz zunanjosti
+  - fizicno najvidnejsi del racunalnika (*periferne* naprave)
+  - prevarjajo informacijo iz CPE v cloveku-razumljivo oz. za drugo napravo
+  - (tudi zunanji pomnilniki)
+
+### Ukaz
+
+- Shranjen v eni ali vec pomnilniskih besedah
+- Vsebuje:
+  - **Operacijsko kodo** (katera operacija)
+  - **Informacija o operandih** (reg., naslovi, konstante, ...)
+- Primer:
+  - Imamo 8-bitno pomnilnisko besedo, ukaz pa je 32-bitni,
+    rabimo **4 besede**
+  - Te besede morajo biti *sosednje*
+- 2 koraka pri izvrsevanju ukaza:
+
+  1. **Prevzem iz pomnilnika (fetch)**
+    - ukazi strojnega jezika ali strojni ukazi
+    - bere s tam, na katerega kaze programski stevec (PC)
+  2. **Izvrsevanje ukaza**
+    - ukaz vsebuje operacijo in operande
+    - CPE (obicajno ALE) izvrsi ukaz
+    - PC nastavi na naslednji ukaz (PC = PC + (dolzino ukaza / dolzina pom. besede))
+      - Posebnost pri skocnih ukazih (PC drugi naslov kot naslednjega)
+
+### Prekinitve
+
+- Izjeme, ki ustavijo obicajno delovanje (prejsna dva koraka)
+  - To so **prekinitve** (interrupt) in **pasti** (trap)
+- Ko pride do tega, skocimo na prvi ukaz **prekinitvenega servisnega programa** (PSP)
+  - Pred tem se shrani vrednost PC (da se lahko vrnemo)
+
+### Glavni pomnilnik
+
+- Shranjuje ukaze in operande
+- Je pasiven
+- Za zmoglivost je vazna hitrost prenost informacij med CPE in GP
+  - Ozko grlo Von Neumannovega rac.
+  - Par resitev
+  - Harvardska arh. (locen pomnilnik za ukaze in operande)
+  - Obicjana / Princetonska arh. (skupen pomnilnik)
+  - Zdaj se uporablja drugacna:
+    - Skupen pomnilnik ampak locena **predpomnilnika**
+      (za shranjevanje najpogostejsih ukazov in operandov)
+
+### Pomnilniska beseda
