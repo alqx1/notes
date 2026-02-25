@@ -1,7 +1,11 @@
 MD_FILES := $(shell find . -name "*.md")
-PDF_FILES := $(MD_FILES:.md=.pdf)
+TEX_FILES := $(shell find . -name "*.tex")
 
-all: $(PDF_FILES)
+PDF_FILES_MD := $(MD_FILES:.md=.pdf)
+PDF_FILES_TEX := $(TEX_FILES:.tex=.pdf)
+
+
+all: $(PDF_FILES_MD) $(PDF_FILES_TEX)
 
 %.pdf: %.md
 	pandoc "$<" \
@@ -10,9 +14,18 @@ all: $(PDF_FILES)
 		--number-sections \
 		--shift-heading-level-by=-1
 
+%.pdf: %.tex
+	pdflatex \
+		-interaction=nonstopmode \
+		-halt-on-error \
+		-output-directory="$(dir $<)" \
+		"$<"
+
 clean:
-	rm $(PDF_FILES)
+	rm $(PDF_FILES_MD) $(PDF_FILES_TEX)
 
 test:
 	echo $(MD_FILES)
-	echo $(PDF_FILES)
+	echo $(TEX_FILES)
+	echo $(PDF_FILES_MD)
+	echo $(PDF_FILES_TEX)
